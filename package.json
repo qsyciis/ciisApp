@@ -55,7 +55,7 @@
     "style-loader": "latest",
     "to-string-loader": "latest",
     "ts-helpers": "latest",
-    "typescript": "latest",
+    "typescript": "2.4.0",
     "url-loader": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest",
