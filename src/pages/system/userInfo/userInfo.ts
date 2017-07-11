@@ -19,6 +19,7 @@ export class UserInfoPage {
     roles:any;
     isEdit:boolean;
     constructor(private httpService:HttpService,private utils:Utils) {
+        this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         this.loadRoles();

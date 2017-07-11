@@ -16,7 +16,6 @@ export class HttpService {
     totalCount:number = 0;//默认总记录数
     items:any;//集合对象
     options:any;//请求参数
-
     constructor(public http: Http,public httpHandle: HttpInterceptHandle) {
     }
 
@@ -124,6 +123,14 @@ export class HttpService {
                 Utils.show("系统异常，请联系管理员");
             }
         });
+    }
+
+    getArray(count:number){
+        let rarr = [];
+        for(let i=1;i<=count;i++){
+            rarr.push(i);
+        }
+        return rarr;
     }
 
 

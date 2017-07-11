@@ -24,6 +24,9 @@ import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
+//ng2-tree
+import 'ng2-tree/styles.css';
+
 //layer
 import 'layer/layer.js';
 

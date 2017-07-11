@@ -20,7 +20,9 @@ export class ResidentAreaPage {
     citys:any;
     areas:any;
     admins:any;
+    isEdit:boolean;
     constructor(private httpService:HttpService,private utils:Utils) {
+        this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         this.loadProvince();
@@ -125,9 +127,11 @@ export class ResidentAreaPage {
     * 弹出新增面板
     */
     showAddPanel(){
+        this.isEdit = false;
         this.subData={
             residentName:'',
-            ddress:''
+            ddress:'',
+            state:'10'
         };
         this.loadProvince();
         layer.open({
@@ -171,6 +175,7 @@ export class ResidentAreaPage {
     * 弹出编辑面板
     */
     showEditPanel(item:any){
+        this.isEdit = true;
         this.subData = Utils.copyObject(item);
         this.loadCity(item.provinceCode);
         this.loadArea(item.cityCode);
@@ -303,6 +308,21 @@ export class ResidentAreaPage {
         if(Utils.isEmpty(this.subData.residentName)){
             layer.tips('小区名不能为空', '#residentName',{tips: 1});
             $("#residentName").focus();
+            return false;
+        }
+        if(Utils.isEmpty(this.subData.buildingNum)){
+            layer.tips('楼栋数不能为空', '#buildingNum',{tips: 1});
+            $("#buildingNum").focus();
+            return false;
+        }
+        if(isNaN(this.subData.buildingNum)){
+            layer.tips('楼栋数输入有误', '#buildingNum',{tips: 1});
+            $("#buildingNum").select();
+            return false;
+        }
+        if(this.subData.buildingNum<1 || this.subData.buildingNum>99){
+            layer.tips('楼栋数只能输入1～99', '#buildingNum',{tips: 1});
+            $("#buildingNum").select();
             return false;
         }
         if(Utils.isEmpty(this.subData.address)){

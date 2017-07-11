@@ -17,6 +17,7 @@ export class ParameterPage {
     datas:any;
     subData:any={};
     constructor(private httpService:HttpService,private utils:Utils) {
+        this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         paraPage = this;
