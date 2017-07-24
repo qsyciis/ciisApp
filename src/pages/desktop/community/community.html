@@ -5,7 +5,7 @@
 </div>
 
 <!--按钮区域-->
-<div class="button-box">
+<div class="button-box text-right">
     <button type="button" class="btn btn-primary" (click)="showAddPanel()"><span class="fa fa-plus-circle"></span> 新增</button>
 </div>
 
@@ -27,8 +27,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of httpService.items">
-                <td>{{item.residentNo}}</td>
-                <td>{{item.residentName}}</td>
+                <td>{{item.communityNo}}</td>
+                <td>{{item.communityName}}</td>
                 <td>{{item.province}}</td>
                 <td>{{item.city}}</td>
                 <td>{{item.area}}</td>
@@ -68,7 +68,7 @@
     <div class="form-group">
         <label class="col-sm-4 control-label"><span class="text-danger">*</span>&nbsp;小区名</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" id="residentName" [(ngModel)]="subData.residentName" placeholder="请输入小区名"/>
+            <input type="text" class="form-control" id="communityName" [(ngModel)]="subData.communityName" placeholder="请输入小区名"/>
         </div>
     </div>
     <div class="form-group">

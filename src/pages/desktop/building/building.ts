@@ -18,7 +18,7 @@ export class BuildingPage {
     datas:any;
     subData:any={};
     tree:any;
-    residentId:string;
+    communityId:string;
     constructor(private httpService:HttpService,private utils:Utils) {
         this.httpService.items = null;
         this.httpService.currentPage = 1;
@@ -56,8 +56,8 @@ export class BuildingPage {
                     children: data.data
               };
               for(let obj in data.data){
-                  this.residentId = data.data[obj].id;
-                  this.loadResidentData();
+                  this.communityId = data.data[obj].id;
+                  this.loadCommunityData();
                   break;
               }
             }else if(data.code==='9999'){
@@ -74,8 +74,8 @@ export class BuildingPage {
     onNodeSelected(event:any){
         if(!event.node.children){
             this.httpService.currentPage = 1;
-            this.residentId = event.node.node.id;
-            this.loadResidentData();
+            this.communityId = event.node.node.id;
+            this.loadCommunityData();
         }
     }
 
@@ -100,7 +100,7 @@ export class BuildingPage {
                        icon: '1',
                        time: 2000
                    },function(){
-                       nowPage.loadResidentData();
+                       nowPage.loadCommunityData();
                    });
                 }else if(data.code==='9999'){
                     Utils.show(data.message);
@@ -142,7 +142,7 @@ export class BuildingPage {
                            icon: '1',
                            time: 2000
                        },function(){
-                           nowPage.loadResidentData();
+                           nowPage.loadCommunityData();
                        });
                     }else if(data.code==='9999'){
                         Utils.show(data.message);
@@ -157,11 +157,11 @@ export class BuildingPage {
     /**
     * 加载楼栋数据
     */
-    loadResidentData(){
+    loadCommunityData(){
         this.httpService.pagination({
             url:'/cms/building/findBuilding',
             data:{
-                residentId:this.residentId
+                communityId:this.communityId
             }
         });
     }

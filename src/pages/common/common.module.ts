@@ -9,9 +9,10 @@ import { LoginPage } from './login/login';
 import { MainPage } from './main/main';
 //我的桌面
 import { HomePage } from '../desktop/home/home';
-import { ResidentAreaPage } from '../desktop/residentArea/residentArea';
+import { CommunityPage } from '../desktop/community/community';
 import { BuildingPage } from '../desktop/building/building';
 import { RoomPage } from '../desktop/room/room';
+import { ResidentPage } from '../desktop/resident/resident';
 //系统管理
 import { ParameterPage } from '../system/parameter/parameter';
 import { UserInfoPage } from '../system/userInfo/userInfo';
@@ -23,13 +24,14 @@ import { UpdatePwPage } from '../system/updatePw/updatePw';
         LoginPage,
         MainPage,
         HomePage,
-        ResidentAreaPage,
+        CommunityPage,
         BuildingPage,
         ParameterPage,
         UserInfoPage,
         RolePage,
         UpdatePwPage,
-        RoomPage
+        RoomPage,
+        ResidentPage
     ],
     imports: [
         BrowserModule,

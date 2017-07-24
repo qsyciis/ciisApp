@@ -72,18 +72,18 @@ export class Utils {
     /**
     * 格式“是”or“否”
     * @param value
-    * @returns {string|string}
+    * @returns {string}
     */
-    formatYesOrNo(value: number|string): string {
-        return value == 1 ? '是' : (value == '0' ? '否' : null);
+    formatYesOrNo(value: string): string {
+        return value == '10' ? '是' : (value == '20' ? '否' : null);
     }
 
     /**
     * 格式状态
     * @param value
-    * @returns {string|string}
+    * @returns {string}
     */
-    formatState(value: string|string): string {
+    formatState(value: string): string {
         return value == '10' ? '正常' : (value == '20' ? '禁用' : '');
     }
 

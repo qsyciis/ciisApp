@@ -1,9 +1,10 @@
 import { Routes } from "@angular/router";
 
 import { HomePage } from '../desktop/home/home';
-import { ResidentAreaPage } from '../desktop/residentArea/residentArea';
+import { CommunityPage } from '../desktop/community/community';
 import { BuildingPage } from '../desktop/building/building';
 import { RoomPage } from '../desktop/room/room';
+import { ResidentPage } from '../desktop/resident/resident';
 
 import { ParameterPage } from '../system/parameter/parameter';
 import { UserInfoPage } from '../system/userInfo/userInfo';
@@ -19,14 +20,17 @@ export const MainRoutes: Routes = [ // Routes类型的数组
         path     : 'desktop/home',//首页
         component: HomePage
     },{
-        path     : 'desktop/residentArea',//住宅小区
-        component: ResidentAreaPage
+        path     : 'desktop/community',//住宅小区
+        component: CommunityPage
     },{
         path     : 'desktop/building',//楼栋管理
         component: BuildingPage
     },{
         path     : 'desktop/room',//房间管理
         component: RoomPage
+    },{
+        path     : 'desktop/resident',//住户管理
+        component: ResidentPage
     },{
         path     : 'system/parameter',//参数管理
         component: ParameterPage

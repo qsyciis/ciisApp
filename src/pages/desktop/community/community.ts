@@ -8,11 +8,11 @@ declare var layer: any;
 var nowPage: any;
 
 @Component({
-    selector   : 'page-residentArea',
-    templateUrl: './residentArea.html',
-    styleUrls: ['./residentArea.scss']
+    selector   : 'page-community',
+    templateUrl: './community.html',
+    styleUrls: ['./community.scss']
 })
-export class ResidentAreaPage {
+export class CommunityPage {
 
     datas:any;
     subData:any={};
@@ -34,7 +34,7 @@ export class ResidentAreaPage {
     */
     loadData(){
         this.httpService.pagination({
-            url:'/cms/residentArea/findAll',
+            url:'/cms/community/findAll',
             data:{}
         });
     }
@@ -44,7 +44,7 @@ export class ResidentAreaPage {
     */
     loadProvince(){
         this.httpService.get({
-            url:'/cms/residentArea/findCitys',
+            url:'/cms/community/findCitys',
             data:{
                 parentCode:'100000'
             }
@@ -72,7 +72,7 @@ export class ResidentAreaPage {
     */
     loadCity(provinceCode:string){
         this.httpService.get({
-            url:'/cms/residentArea/findCitys',
+            url:'/cms/community/findCitys',
             data:{
                 parentCode:provinceCode
             }
@@ -100,7 +100,7 @@ export class ResidentAreaPage {
     */
     loadArea(cityCode:string){
         this.httpService.get({
-            url:'/cms/residentArea/findCitys',
+            url:'/cms/community/findCitys',
             data:{
                 parentCode:cityCode
             }
@@ -129,7 +129,7 @@ export class ResidentAreaPage {
     showAddPanel(){
         this.isEdit = false;
         this.subData={
-            residentName:'',
+            communityName:'',
             ddress:'',
             state:'10'
         };
@@ -148,7 +148,7 @@ export class ResidentAreaPage {
             yes: function(index:number){
                 if(nowPage.validator()){
                     nowPage.httpService.post({
-                        url:'/cms/residentArea/add',
+                        url:'/cms/community/add',
                         data:nowPage.subData
                     }).subscribe((data:any)=>{
                         layer.closeAll();
@@ -193,7 +193,7 @@ export class ResidentAreaPage {
             yes: function(index:number){
                 if(nowPage.validator()){
                     nowPage.httpService.post({
-                        url:'/cms/residentArea/update',
+                        url:'/cms/community/update',
                         data:nowPage.subData
                     }).subscribe((data:any)=>{
                         layer.closeAll();
@@ -221,9 +221,9 @@ export class ResidentAreaPage {
     */
     showAdmin(item:any){
         this.httpService.get({
-            url:'/cms/residentArea/findAdmin',
+            url:'/cms/community/findAdmin',
             data:{
-                residentId:item.id
+                communityId:item.id
             }
         }).subscribe((data:any)=>{
             if(data.code==='0000'){
@@ -248,9 +248,9 @@ export class ResidentAreaPage {
                             }
                         }
                         nowPage.httpService.post({
-                            url:'/cms/residentArea/saveAdmin',
+                            url:'/cms/community/saveAdmin',
                             data:{
-                                residentId:item.id,
+                                communityId:item.id,
                                 userIds:userIds
                             }
                         }).subscribe((data:any)=>{
@@ -305,9 +305,9 @@ export class ResidentAreaPage {
 
 
     validator(){
-        if(Utils.isEmpty(this.subData.residentName)){
-            layer.tips('小区名不能为空', '#residentName',{tips: 1});
-            $("#residentName").focus();
+        if(Utils.isEmpty(this.subData.communityName)){
+            layer.tips('小区名不能为空', '#communityName',{tips: 1});
+            $("#communityName").focus();
             return false;
         }
         if(Utils.isEmpty(this.subData.buildingNum)){
