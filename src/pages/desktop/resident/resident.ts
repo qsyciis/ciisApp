@@ -5,7 +5,7 @@ import {Utils} from "../../../providers/Utils";
 
 declare var $: any;
 declare var layer: any;
-var paraPage: any;
+var nowPage: any;
 
 @Component({
     selector   : 'page-resident',
@@ -27,12 +27,13 @@ export class ResidentPage {
     units:any;//单元集合
     rooms:any;//房间集合
     residRooms:any;//住户房间集合
+    owner:string;//户主
     constructor(private httpService:HttpService,private utils:Utils) {
         this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         this.loadCommunitys();
-        paraPage = this;
+        nowPage = this;
     }
 
     /**
@@ -81,15 +82,71 @@ export class ResidentPage {
         });
     }
 
+    deleteItem(item:any){
+        layer.confirm('您确定要删除此数据吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            nowPage.httpService.post({
+                url:'/cms/resident/delete',
+                data:item
+            }).subscribe((data:any)=>{
+                layer.closeAll();
+                if(data.code==='0000'){
+                    //删除成功
+                   layer.msg(data.message,{
+                       icon: '1',
+                       time: 2000
+                   },function(){
+                       nowPage.loadData();
+                   });
+                }else if(data.code==='9999'){
+                    Utils.show(data.message);
+                }else{
+                    Utils.show("系统异常，请联系管理员");
+                }
+            });
+        });
+    }
+
+    /**
+    * 修改状态
+    */
+    updateState(item:any,state:string){
+        layer.confirm('您确定要执行此操作吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            nowPage.httpService.post({
+                url:'/cms/resident/updateState',
+                data:{
+                    communityId:item.communityId,
+                    id:item.id,
+                    state:state
+                }
+            }).subscribe((data:any)=>{
+                layer.closeAll();
+                if(data.code==='0000'){
+                    //修改成功
+                   layer.msg(data.message,{
+                       icon: '1',
+                       time: 2000
+                   },function(){
+                       nowPage.loadData();
+                   });
+                }else if(data.code==='9999'){
+                    Utils.show(data.message);
+                }else{
+                    Utils.show("系统异常，请联系管理员");
+                }
+            });
+        });
+    }
+
     /**
     * 弹出新增面板
     */
     showAddPanel(){
         this.subData = {
-            name: '',
             mobile: '',
-            communityId: '',
-            owner: '20',
             state: '10'
         };
         for(let o in this.communitys){
@@ -112,10 +169,10 @@ export class ResidentPage {
             area: ['350px','auto'],
             content: $("#editPanel"),
             yes: function(index:number){
-                if(paraPage.validator()){
-                    paraPage.httpService.post({
+                if(nowPage.validator()){
+                    nowPage.httpService.post({
                         url:'/cms/resident/add',
-                        data:paraPage.subData
+                        data:nowPage.subData
                     }).subscribe((data:any)=>{
                         layer.closeAll();
                         if(data.code==='0000'){
@@ -124,50 +181,8 @@ export class ResidentPage {
                                icon: '1',
                                time: 2000
                            },function(){
-                               paraPage.criteria = '';
-                               paraPage.loadData();
-                           });
-                        }else if(data.code==='9999'){
-                            Utils.show(data.message);
-                        }else{
-                            Utils.show("系统异常，请联系管理员");
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    /**
-    * 弹出编辑面板
-    */
-    showEditPanel(item:any){
-        this.subData = Utils.copyObject(item);
-        layer.open({
-            title: "修改住户信息",
-            btn: ["保存","退出"],
-            type: 1,
-            closeBtn: 0,
-            shade: 0,
-            fixed: true,
-            shadeClose: false,
-            resize: false,
-            area: ['350px','auto'],
-            content: $("#editPanel"),
-            yes: function(index:number){
-                if(paraPage.validator()){
-                    paraPage.httpService.post({
-                        url:'/cms/resident/update',
-                        data:paraPage.subData
-                    }).subscribe((data:any)=>{
-                        layer.closeAll();
-                        if(data.code==='0000'){
-                            //修改成功
-                           layer.msg(data.message,{
-                               icon: '1',
-                               time: 2000
-                           },function(){
-                               paraPage.loadData();
+                               nowPage.criteria = '';
+                               nowPage.loadData();
                            });
                         }else if(data.code==='9999'){
                             Utils.show(data.message);
@@ -193,6 +208,7 @@ export class ResidentPage {
         this.rooms = null;
         this.roomId = null;
         this.residRooms = null;
+        this.owner = '20';
         this.loadBuildings();
         this.loadResidentRooms();
         layer.open({
@@ -203,7 +219,7 @@ export class ResidentPage {
             fixed: true,
             shadeClose: false,
             resize: false,
-            area: ['350px','300px'],
+            area: ['420px','300px'],
             content: $("#relationPanel")
         });
     }
@@ -216,7 +232,9 @@ export class ResidentPage {
             url:'/cms/resident/addRelation',
             data:{
                 residentId: this.residentId,
-                roomId: this.roomId
+                roomId: this.roomId,
+                communityId: this.communityId,
+                owner: this.owner
             }
         }).subscribe((data:any)=>{
             if(data.code==='0000'){
@@ -225,7 +243,7 @@ export class ResidentPage {
                    icon: '1',
                    time: 2000
                },function(){
-                   paraPage.loadResidentRooms();
+                   nowPage.loadResidentRooms();
                });
             }else if(data.code==='9999'){
                 Utils.show(data.message);
@@ -338,7 +356,8 @@ export class ResidentPage {
         this.httpService.get({
             url:'/cms/resident/findResidentRooms',
             data:{
-                residentId:this.residentId
+                residentId: this.residentId,
+                communityId: this.communityId
             }
         }).subscribe((data:any)=>{
             if(data.code==='0000'){
@@ -358,10 +377,10 @@ export class ResidentPage {
         layer.confirm('您确定要删除此数据吗？', {
             btn: ['确定','取消'] //按钮
         }, function(){
-            paraPage.httpService.post({
+            nowPage.httpService.post({
                 url:'/cms/resident/delRelation',
                 data:{
-                    residentId:this.residentId,
+                    residentId:nowPage.residentId,
                     roomId:roomId
                 }
             }).subscribe((data:any)=>{
@@ -371,7 +390,7 @@ export class ResidentPage {
                        icon: '1',
                        time: 2000
                    },function(){
-                       paraPage.loadResidentRooms();
+                       nowPage.loadResidentRooms();
                    });
                 }else if(data.code==='9999'){
                     Utils.show(data.message);
@@ -383,11 +402,6 @@ export class ResidentPage {
     }
 
     validator(){
-        if(Utils.isEmpty(this.subData.name)){
-            layer.tips('姓名不能为空', '#name',{tips: 1});
-            $("#name").focus();
-            return false;
-        }
         if(Utils.isEmpty(this.subData.mobile)){
             layer.tips('手机号不能为空', '#mobile',{tips: 1});
             $("#mobile").focus();
