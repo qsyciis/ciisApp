@@ -18,6 +18,7 @@ export class BannerPage {
     datas:any;
     subData:any={};
     src: string = "/assets/images/banner_df.jpg";
+    imgUrl: string;
     resizeOptions: ResizeOptions = {
         resizeMaxHeight: 1024,
         resizeMaxWidth: 768,
@@ -28,6 +29,7 @@ export class BannerPage {
         this.httpService.currentPage = 1;
         this.loadData();
         paraPage = this;
+        this.imgUrl = Utils.FILE_SERVE_URL+"/";
     }
 
     /**
@@ -104,7 +106,7 @@ export class BannerPage {
     */
     showEditPanel(item:any){
         this.subData = Utils.copyObject(item);
-        this.src = this.subData.img;
+        this.src = this.imgUrl+this.subData.img;
         layer.open({
             title: "修改广告图片",
             btn: ["保存","退出"],

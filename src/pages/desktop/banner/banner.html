@@ -27,7 +27,7 @@
             <tr *ngFor="let item of httpService.items">
                 <td>{{item.title}}</td>
                 <td style="padding:0;" class="text-center">
-                    <img [src]="item.img" style="width:120px;height:40px;cursor:pointer;" (click)="showImg(item.img)">
+                    <img [src]="imgUrl+item.img" style="width:120px;height:40px;cursor:pointer;" (click)="showImg(imgUrl+item.img)">
                 </td>
                 <td>{{item.bannerIdx}}</td>
                 <td>{{utils.formatDate(item.createTime,'yyyy-MM-dd HH:mm:ss')}}</td>

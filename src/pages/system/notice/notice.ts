@@ -22,11 +22,15 @@ export class NoticePage {
     datas:any;
     subData:any={};
     src:string;
+    communitys:any;//小区
+    imgUrl: string;
     constructor(private httpService:HttpService,private utils:Utils) {
         this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         paraPage = this;
+        this.loadCommunitys();
+        this.imgUrl = Utils.FILE_SERVE_URL+"/";
     }
 
     /**
@@ -36,6 +40,24 @@ export class NoticePage {
         this.httpService.pagination({
             url:'/cms/notice/findAll',
             data:{}
+        });
+    }
+
+    /**
+    * 加载小区
+    */
+    loadCommunitys(){
+        this.httpService.get({
+            url:'/cms/resident/findCommunitys',
+            data:{}
+        }).subscribe((data:any)=>{
+            if(data.code==='0000'){
+                this.communitys = data.data;
+            }else if(data.code==='9999'){
+                Utils.show(data.message);
+            }else{
+                Utils.show("系统异常，请联系管理员");
+            }
         });
     }
 
@@ -52,6 +74,12 @@ export class NoticePage {
             endTime: this.utils.dateFormat(new Date( s.getFullYear(), s.getMonth()+1, s.getDate()),'yyyy-MM-dd'),
             state: '10'
         };
+        if(this.communitys != null && this.communitys.length>0){
+            this.subData.communityId = this.communitys[0].id;
+        }else{
+            Utils.show("请先关联小区");
+            return;
+        }
         layer.open({
             title: "发布公告",
             btn: ["保存","退出"],
@@ -61,7 +89,7 @@ export class NoticePage {
             fixed: true,
             shadeClose: false,
             resize: false,
-            area: ['550px','470px'],
+            area: ['550px','510px'],
             content: $("#editPanel"),
             yes: function(index:number){
                 if(paraPage.validator()){
@@ -94,7 +122,7 @@ export class NoticePage {
     */
     showEditPanel(item:any){
         this.subData = Utils.copyObject(item);
-        this.src = !this.subData.img?"/assets/images/uploadDefault.jpg":this.subData.img;
+        this.src = !this.subData.img?"/assets/images/uploadDefault.jpg":this.imgUrl+this.subData.img;
         this.subData.endTime = this.utils.formatDate(item.endTime,'yyyy-MM-dd');
         layer.open({
             title: "修改公告",
@@ -105,7 +133,7 @@ export class NoticePage {
             fixed: true,
             shadeClose: false,
             resize: false,
-            area: ['550px','470px'],
+            area: ['550px','510px'],
             content: $("#editPanel"),
             yes: function(index:number){
                 if(paraPage.validator()){
@@ -129,6 +157,23 @@ export class NoticePage {
                         }
                     });
                 }
+            }
+        });
+    }
+
+
+    /**
+    * 显示图片
+    */
+    showImg(imgData:string){
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false,
+            area: ['auto','auto'],
+            scrollbar: false,
+            content: "<img src='"+imgData+"' style='padding:5px;'>",
+            cancel: function(){
             }
         });
     }

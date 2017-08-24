@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { ImageResult, ResizeOptions } from 'ng2-imageupload';
 
 import {HttpService} from "../../../providers/HttpService";
 import {Utils} from "../../../providers/Utils";
@@ -13,7 +14,12 @@ var paraPage: any;
     styleUrls: ['./message.scss']
 })
 export class MessagePage {
-
+    resizeOptions: ResizeOptions = {
+        resizeMaxHeight: 768,
+        resizeMaxWidth: 768,
+        resizeQuality: 0.9
+    };
+    imgUrl: string;
     datas:any;
     subData:any={};
     communitys:any;//小区
@@ -24,12 +30,14 @@ export class MessagePage {
     unitName:string='';//单元名称
     rooms:any;//房间集合
     roomName:string='';//房间名称
+    src:string;
     constructor(private httpService:HttpService,private utils:Utils) {
         this.httpService.items = null;
         this.httpService.currentPage = 1;
         this.loadData();
         this.loadCommunitys();
         paraPage = this;
+        this.imgUrl = Utils.FILE_SERVE_URL+"/";
     }
 
     /**
@@ -53,6 +61,7 @@ export class MessagePage {
             unitId: '',
             roomId: ''
         };
+        this.src = "/assets/images/uploadDefault.jpg";
         this.communityName = '';
         this.buildingName = '';
         this.unitName = '';
@@ -73,7 +82,7 @@ export class MessagePage {
             fixed: true,
             shadeClose: false,
             resize: false,
-            area: ['550px','auto'],
+            area: ['550px','410px'],
             content: $("#editPanel"),
             yes: function(index:number){
                 if(paraPage.validator()){
@@ -100,6 +109,36 @@ export class MessagePage {
                 }
             }
         });
+    }
+
+    /**
+    * 显示图片
+    */
+    showImg(imgData:string){
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false,
+            area: ['auto','auto'],
+            scrollbar: false,
+            content: "<img src='"+imgData+"' style='padding:5px;'>",
+            cancel: function(){
+            }
+        });
+    }
+
+    /**
+    * 选择图片
+    */
+    selected(imageResult: ImageResult) {
+        this.src = imageResult.resized
+            && imageResult.resized.dataURL
+            || imageResult.dataURL;
+        this.subData.img = this.src;
+    }
+
+    uploadImg(){
+        $("#uploadInput").click();
     }
 
     deleteItem(item:any){

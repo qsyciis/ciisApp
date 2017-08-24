@@ -159,6 +159,7 @@ export class EquipmentPage {
     */
     selectCommunity(selectIdx:number){
         this.communityId = this.communitys[selectIdx].value;
+        this.subData.communityId = this.communityId;
         this.buildingId = '';
         this.unitNo = '';
         this.loadBuildings();
@@ -169,6 +170,7 @@ export class EquipmentPage {
     */
     selectBuild(selectIdx:number){
         this.buildingId = this.buildings[selectIdx].value;
+        this.subData.buildingId = this.buildingId;
         this.unitNo = '';
         this.loadUnits();
     }
@@ -178,6 +180,7 @@ export class EquipmentPage {
     */
     selectUnit(selectIdx:number){
         this.unitNo = this.units[selectIdx].value;
+        this.subData.unitName = this.unitNo;
     }
 
     /**

@@ -13,9 +13,10 @@ declare var layer: any;//layer对象
 @Injectable()
 export class Utils {
 
-    static APP_SERVE_URL = 'http://127.0.0.1:8080';//请求路径 dev环境
-    // static APP_SERVE_URL = '/api';//请求路径 prod环境
+    // static APP_SERVE_URL = 'http://127.0.0.1:8080';//请求路径 dev环境
+    static APP_SERVE_URL = '/api';//请求路径 prod环境
     static DEFAULT_AVATAR = '/assets/images/avatar.png';//用户默认头像
+    static FILE_SERVE_URL = 'http://120.25.166.3:9999';//文件服务器访问路径
     static PAGE_SIZE = 15;//默认分页大小
 
     constructor() {
@@ -178,7 +179,7 @@ export class Utils {
     * 手机号是否正确(true:正确|false:不正确)
     */
     static isMobile(value:any){
-        return (/^1[3|4|5|8][0-9]\d{4,8}$/.test(value));
+        return (/^1[3|4|5|8|9][0-9]\d{4,8}$/.test(value));
     }
 
     /**

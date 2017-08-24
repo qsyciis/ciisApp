@@ -11,10 +11,11 @@
 
 <!--数据显示区域-->
 <div class="table-box">
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" class="table table-bordered table-hover" style="table-layout:fixed;">
         <thead>
             <tr class="active">
                 <th>标题</th>
+                <th>图片</th>
                 <th>内容</th>
                 <th>接收对象</th>
                 <th>发送时间</th>
@@ -24,7 +25,8 @@
         <tbody>
             <tr *ngFor="let item of httpService.items">
                 <td>{{item.title}}</td>
-                <td>{{item.content}}</td>
+                <td style="padding:2px;"><img [src]="item.img?imgUrl+item.img:''" [hidden]="!item.img" class="img-rounded"  style="width:120px;height:40px;cursor:pointer;" (click)="showImg(imgUrl+item.img)"></td>
+                <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{item.content}}</td>
                 <td>{{item.sendee}}</td>
                 <td>{{utils.formatDate(item.createTime,'yyyy-MM-dd HH:mm:ss')}}</td>
                 <td>
@@ -80,6 +82,13 @@
         <label class="col-sm-2 control-label"><span class="text-danger">*</span>&nbsp;标题</label>
         <div class="col-sm-10">
             <input type="text" maxlength="50" class="form-control" id="title" [(ngModel)]="subData.title" placeholder="请输入标题"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;图片</label>
+        <div class="col-sm-10">
+            <input type="file" id="uploadInput" style="display:none;" imageUpload (imageSelected)="selected($event)" [resizeOptions]="resizeOptions" accept="image/png,image/jpeg,image/gif,image/jpg">
+            <img [src]="src" (click)="uploadImg()" [hidden]="!src" class="img-rounded" style="width:150px;height:70px;cursor: pointer;">
         </div>
     </div>
     <div class="form-group">
